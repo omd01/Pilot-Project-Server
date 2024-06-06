@@ -26,6 +26,10 @@ exports.createCompanyProfile = async (req, res) => {
     await newCompanyProfile.save();
     res.status(201).json(newCompanyProfile);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (error.code === 11000) { // Duplicate key error
+      res.status(400).json({ message: 'Company with this ID already exists.' });
+    } else {
+      res.status(400).json({ message: error.message });
+    }
   }
 };
