@@ -1,4 +1,3 @@
-// controllers/formDataController.js
 const FormData = require("../models/FormData");
 
 // Create or update form data
@@ -12,7 +11,11 @@ exports.submitForm = async (req, res) => {
       // User with this phone number already exists
       if (formData.domains.includes(domain)) {
         // Domain already registered
-        return res.status(400).send("You have already registered with this phone number and domain.");
+        return res
+          .status(400)
+          .send(
+            "You have already registered with this phone number and domain."
+          );
       } else {
         // Add new domain to the domains array
         formData.domains.push(domain);
@@ -42,6 +45,9 @@ exports.submitForm = async (req, res) => {
     }
   } catch (error) {
     console.error("Error saving form data:", error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).send(error.message);
+    }
     res.status(500).send("Server error");
   }
 };
