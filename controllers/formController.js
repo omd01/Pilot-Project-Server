@@ -1,3 +1,4 @@
+// controllers/formDataController.js
 const FormData = require("../models/FormData");
 
 // Create or update form data
@@ -45,6 +46,7 @@ exports.submitForm = async (req, res) => {
   }
 };
 
+// Fetch all form data
 exports.getAllFormData = async (req, res) => {
   try {
     const allFormData = await FormData.find();

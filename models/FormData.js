@@ -11,5 +11,3 @@ const formDataSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('FormData', formDataSchema);
-
-module.exports = FormData;
