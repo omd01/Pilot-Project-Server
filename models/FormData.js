@@ -10,6 +10,6 @@ const formDataSchema = new mongoose.Schema({
   city: { type: String, required: true },
 });
 
-const FormData = mongoose.model("FormData", formDataSchema);
+module.exports = mongoose.model('FormData', formDataSchema);
 
 module.exports = FormData;
