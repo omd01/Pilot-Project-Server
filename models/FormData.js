@@ -14,9 +14,9 @@ const formDataSchema = new mongoose.Schema({
     }
   },
   domains: { type: [String], required: true },
-  country: { type: String, required: true },
-  state: { type: String, required: true },
-  city: { type: String, required: true },
+  country: { type: String },
+  state: { type: String },
+  city: { type: String },
 });
 
 const FormData = mongoose.model("FormData", formDataSchema);
