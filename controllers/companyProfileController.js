@@ -33,3 +33,20 @@ exports.createCompanyProfile = async (req, res) => {
     }
   }
 };
+
+// Get a company profile by companyId
+exports.getCompanyProfileById = async (req, res) => {
+  const { companyId } = req.params;
+
+  try {
+    const companyProfile = await CompanyProfile.findOne({ companyId });
+
+    if (!companyProfile) {
+      return res.status(404).json({ message: 'Company profile not found.' });
+    }
+
+    res.status(200).json(companyProfile);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

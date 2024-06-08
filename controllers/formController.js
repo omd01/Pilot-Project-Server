@@ -63,3 +63,20 @@ exports.getAllFormData = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+// Fetch a user by phone number
+exports.getUserByPhone = async (req, res) => {
+  try {
+    const { phone } = req.params;
+    const userData = await FormData.findOne({ phone });
+
+    if (!userData) {
+      return res.status(404).send("User not found.");
+    }
+
+    res.status(200).json(userData);
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    res.status(500).send("Server error");
+  }
+};
