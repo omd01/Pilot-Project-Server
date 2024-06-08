@@ -9,10 +9,10 @@ const TaskSchema = new Schema({
     taskReq: { type: String, required: true },
     desc: { type: String, required: true },
     domain: { type: String, required: true },
-    skill: { type: String, required: true },
+    skill: { type: [String], required: true },
     stipend: { type: Number, required: true },
     helpLinks: { type: String },
-    nice: { type: String },
+    nice: { type: [String] },
     endDate: { type: Date, required: true }
 }, { timestamps: true });
 

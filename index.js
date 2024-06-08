@@ -7,6 +7,7 @@ const cors = require('cors');
 const companyProfileRoutes = require('./routes/companyProfileRoutes');
 const formRoutes = require('./routes/formRoutes'); // Add this line
 const taskRoutes = require('./routes/taskRoutes');
+const applicationRoutes = require("./routes/applicationRoutes")
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(cors());
 app.use('/api/company-profiles', companyProfileRoutes);
 app.use('/api', formRoutes); // Add this line
 app.use('/api', taskRoutes);
+app.use('/api/applications', applicationRoutes)
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
