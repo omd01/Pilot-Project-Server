@@ -11,7 +11,11 @@ exports.submitForm = async (req, res) => {
       // User with this phone number already exists
       if (formData.domains.includes(domain)) {
         // Domain already registered
-        return res.status(400).send("You have already registered with this phone number and domain.");
+        return res
+          .status(400)
+          .send(
+            "You have already registered with this phone number and domain."
+          );
       } else {
         // Add new domain to the domains array
         formData.domains.push(domain);
@@ -41,6 +45,25 @@ exports.submitForm = async (req, res) => {
     }
   } catch (error) {
     console.error("Error saving form data:", error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).send(error.message);
+    }
     res.status(500).send("Server error");
+  }
+};
+
+exports.getFormDataByPhone = async (req, res) => {
+  try {
+    const phone = req.params.phone;
+    const formData = await FormData.findOne({ phone });
+
+    if (formData) {
+      res.status(200).json(formData);
+    } else {
+      res.status(404).json({ message: 'Form data not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching form data:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
