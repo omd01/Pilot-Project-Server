@@ -6,6 +6,7 @@ exports.createApplication = async (req, res) => {
     const {
       taskId,
       taskName,
+      companyId,
       companyName,
       domain,
       studentName,
@@ -18,20 +19,22 @@ exports.createApplication = async (req, res) => {
     const formData = await FormData.findOne({ phone: studentNumber });
     console.log(formData);
     if (!formData) {
-
       // Phone number not found in FormData
       return res.status(400).json({ message: "Phone number not registered" });
     }
 
     if (!formData.domains.includes(domain)) {
-        // Domain not registered with the provided phone number
-        return res.status(400).json({ message: 'Phone number not registered with the entered domain' });
+      // Domain not registered with the provided phone number
+      return res.status(400).json({
+        message: "Phone number not registered with the entered domain",
+      });
     }
-    
+
     // Create a new application instance
     const newApplication = new Application({
       taskId,
       taskName,
+      companyId,
       companyName,
       domain,
       studentName,
