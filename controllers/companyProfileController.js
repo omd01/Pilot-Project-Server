@@ -1,4 +1,5 @@
 // controllers/companyProfileController.js
+
 const CompanyProfile = require('../models/CompanyProfile');
 
 // Get all company profiles
@@ -30,5 +31,22 @@ exports.createCompanyProfile = async (req, res) => {
     } else {
       res.status(400).json({ message: error.message });
     }
+  }
+};
+
+// Get a company profile by companyId
+exports.getCompanyProfileById = async (req, res) => {
+  const { companyId } = req.params;
+
+  try {
+    const companyProfile = await CompanyProfile.findOne({ companyId });
+
+    if (!companyProfile) {
+      return res.status(404).json({ message: 'Company profile not found.' });
+    }
+
+    res.status(200).json(companyProfile);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

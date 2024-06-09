@@ -10,11 +10,7 @@ const taskRoutes = require('./routes/taskRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({
-  origin: 'http://linksus.in', // Update with your website's domain
-  methods: 'GET,POST,PUT,DELETE',
-  allowedHeaders: 'Content-Type'
-}));
+app.use(cors());
 app.use(bodyParser.json());
 
 // Connect to MongoDB

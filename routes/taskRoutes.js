@@ -17,4 +17,6 @@ router.put('/tasks/:id', taskController.updateTask);
 // Delete a task by ID
 router.delete('/tasks/:id', taskController.deleteTask);
 
+router.post('/tasks/:taskId/discussions', taskController.addDiscussionToTask);
+
 module.exports = router;
