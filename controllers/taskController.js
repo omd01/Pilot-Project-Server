@@ -26,7 +26,7 @@ exports.getAllTasks = async (req, res) => {
 
 exports.getTaskById = async (req, res) => {
     try {
-        const task = await Task.findById(req.params.id);
+        const task = await Task.findOne({ taskId: req.params.id });
         if (!task) {
             return res.status(404).json({ error: 'Task not found' });
         }
@@ -57,5 +57,27 @@ exports.deleteTask = async (req, res) => {
         res.status(200).json({ message: 'Task deleted' });
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+};
+
+// Controller function to add a discussion to a task
+exports.addDiscussionToTask = async (req, res) => {
+    const { taskId } = req.params;
+    const { question, answer, username } = req.body;
+
+    try {
+        const task = await Task.findOne({ taskId });
+
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+
+        task.discussions.push({ question, answer, username });
+        await task.save();
+
+        res.status(200).json({ message: 'Discussion added successfully' });
+    } catch (error) {
+        console.error('Error adding discussion:', error);
+        res.status(500).json({ message: 'Error adding discussion', error });
     }
 };

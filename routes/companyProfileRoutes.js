@@ -6,5 +6,6 @@ const companyProfileController = require('../controllers/companyProfileControlle
 
 router.get('/', companyProfileController.getAllCompanyProfiles);
 router.post('/', companyProfileController.createCompanyProfile);
+router.get('/:companyId', companyProfileController.getCompanyProfileById);
 
 module.exports = router;
