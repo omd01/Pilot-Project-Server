@@ -1,17 +1,32 @@
 const Task = require('../models/TaskModel');
+const CompanyProfile = require('../models/CompanyProfile');
 
 exports.createTask = async (req, res) => {
     try {
-        const task = new Task(req.body);
+        const { companyId, ...taskData } = req.body;
+
+        // Fetch the company logo based on the companyId
+        const companyProfile = await CompanyProfile.findOne({ companyId });
+
+        if (!companyProfile) {
+            return res.status(404).json({ message: 'Company not found' });
+        }
+
+        // Include the companyLogo in the taskData
+        taskData.companyLogo = companyProfile.companyLogo;
+
+        // Create and save the task
+        const task = new Task({ companyId, ...taskData });
         await task.save();
+
         res.status(201).json(task);
     } catch (error) {
         if (error.code === 11000) {
             // Duplicate key error
             res.status(400).json({ message: 'Duplicate taskId' });
-          } else {
-            res.status(400).json({ error: error.message });;
-          }
+        } else {
+            res.status(400).json({ error: error.message });
+        }
     }
 };
 
