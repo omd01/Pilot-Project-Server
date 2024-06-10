@@ -5,6 +5,7 @@ const TaskSchema = new Schema({
     name: { type: String, required: true },
     taskId: { type: String, required: true, unique: true },
     companyId: { type: String, required: true },
+    companyLogo:{ type: String, required: true },
     companyName: { type: String, required: true },
     taskReq: { type: String, required: true },
     desc: { type: String, required: true },

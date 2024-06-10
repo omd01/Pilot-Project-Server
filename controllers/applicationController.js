@@ -6,6 +6,7 @@ exports.createApplication = async (req, res) => {
     const {
       taskId,
       taskName,
+      companyId,
       companyName,
       domain,
       studentName,
@@ -33,6 +34,7 @@ exports.createApplication = async (req, res) => {
       taskId,
       taskName,
       companyName,
+      companyId,
       domain,
       studentName,
       studentNumber,
