@@ -68,15 +68,64 @@ exports.getAllFormData = async (req, res) => {
 exports.getUserByPhone = async (req, res) => {
   try {
     const { phone } = req.params;
-    const userData = await FormData.findOne({ phone });
+    const formData = await FormData.findOne({ phone });
 
-    if (!userData) {
-      return res.status(404).send("User not found.");
+    if (formData) {
+      res.status(200).json(formData);
+    } else {
+      res.status(404).json({ message: 'Form data not found' });
     }
-
-    res.status(200).json(userData);
   } catch (error) {
     console.error("Error fetching user data:", error);
+    res.status(500).send("Server error");
+  }
+};
+
+// Update a user's form data
+exports.updateFormData = async (req, res) => {
+  try {
+    const { phone } = req.params;
+    const { name, email, domain, country, state, city } = req.body;
+
+    const formData = await FormData.findOne({ phone });
+
+    if (!formData) {
+      return res.status(404).json({ message: 'Form data not found' });
+    }
+
+    // Update the user's data
+    formData.name = name || formData.name;
+    formData.email = email || formData.email;
+    formData.country = country || formData.country;
+    formData.state = state || formData.state;
+    formData.city = city || formData.city;
+
+    if (domain && !formData.domains.includes(domain)) {
+      formData.domains.push(domain);
+    }
+
+    await formData.save();
+    res.status(200).json({ message: 'Form data updated successfully', formData });
+  } catch (error) {
+    console.error("Error updating form data:", error);
+    res.status(500).send("Server error");
+  }
+};
+
+// Delete a user's form data
+exports.deleteFormData = async (req, res) => {
+  try {
+    const { phone } = req.params;
+
+    const formData = await FormData.findOneAndDelete({ phone });
+
+    if (!formData) {
+      return res.status(404).json({ message: 'Form data not found' });
+    }
+
+    res.status(200).json({ message: 'Form data deleted successfully' });
+  } catch (error) {
+    console.error("Error deleting form data:", error);
     res.status(500).send("Server error");
   }
 };
