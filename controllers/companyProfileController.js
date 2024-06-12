@@ -50,3 +50,42 @@ exports.getCompanyProfileById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Update a company profile
+exports.updateCompanyProfile = async (req, res) => {
+  const { companyId } = req.params;
+  const { companyLogo, companyName, desc } = req.body;
+
+  try {
+    const updatedProfile = await CompanyProfile.findOneAndUpdate(
+      { companyId },
+      { companyLogo, companyName, desc },
+      // { new: true }
+    );
+
+    if (!updatedProfile) {
+      return res.status(404).json({ message: 'Company profile not found.' });
+    }
+
+    res.status(200).json(updatedProfile);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Delete a company profile
+exports.deleteCompanyProfile = async (req, res) => {
+  const { companyId } = req.params;
+
+  try {
+    const deletedProfile = await CompanyProfile.findOneAndDelete({ companyId });
+
+    if (!deletedProfile) {
+      return res.status(404).json({ message: 'Company profile not found.' });
+    }
+
+    res.status(200).json({ message: 'Company profile deleted successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

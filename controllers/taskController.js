@@ -76,9 +76,9 @@ exports.deleteTask = async (req, res) => {
 };
 
 // Controller function to add a discussion to a task
-exports.addDiscussionToTask = async (req, res) => {
+exports.addOrUpdateDiscussionToTask = async (req, res) => {
     const { taskId } = req.params;
-    const { question, answer, username } = req.body;
+    const { question, answer, username, discussionIndex } = req.body;
 
     try {
         const task = await Task.findOne({ taskId });
@@ -87,12 +87,40 @@ exports.addDiscussionToTask = async (req, res) => {
             return res.status(404).json({ message: 'Task not found' });
         }
 
-        task.discussions.push({ question, answer, username });
-        await task.save();
+        if (discussionIndex !== undefined) {
+            // Update existing discussion
+            if (task.discussions[discussionIndex]) {
+                task.discussions[discussionIndex].answer = answer;
+            } else {
+                return res.status(400).json({ message: 'Discussion not found' });
+            }
+        } else {
+            // Add new discussion
+            task.discussions.push({ question, answer, username });
+        }
 
-        res.status(200).json({ message: 'Discussion added successfully' });
+        await task.save();
+        res.status(200).json({ message: 'Discussion updated successfully' });
     } catch (error) {
-        console.error('Error adding discussion:', error);
-        res.status(500).json({ message: 'Error adding discussion', error });
+        console.error('Error updating discussion:', error);
+        res.status(500).json({ message: 'Error updating discussion', error });
+    }
+};
+
+//displaying discussions
+exports.getDiscussions = async (req, res) => {
+    const { taskId } = req.params;
+
+    try {
+        const task = await Task.findOne({ taskId });
+
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+
+        const filteredDiscussions = task.discussions.filter(discussion => discussion.answer);
+        res.status(200).json(filteredDiscussions);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching discussions', error });
     }
 };
