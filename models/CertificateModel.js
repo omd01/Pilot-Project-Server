@@ -3,7 +3,7 @@ const sendCertificate = require("../certificate/certificate.service");
 
 const certificateSchema = new mongoose.Schema({
   taskName: { type: String, required: true },
-  taskId:{type: String, required: true},
+  taskId: { type: String, required: true },
   companyManager: { type: String, required: true },
   companyManagerSignature: { type: String, required: true },
   companyName: { type: String, required: true },
@@ -12,18 +12,36 @@ const certificateSchema = new mongoose.Schema({
   domain: { type: String, required: true },
   studentName: { type: String, required: true },
   studentEmail: { type: String, required: true },
-  status: { type: String ,default: "pending"},
-  incentive: { type: String, default:null },
+  status: { type: String, default: "pending" },
+  incentive: { type: String, default: null },
 });
+
+
 // Post-save middleware
-certificateSchema.post("save", function (doc) {
-  sendCertificate(doc);
+certificateSchema.post("save", async function (doc, next) {
+  await sendCertificate(doc);
+  next();
 });
 
 // Post-update middleware
-certificateSchema.post("findOneAndUpdate", function (doc) {
-  sendCertificate(doc);
+certificateSchema.post("findOneAndUpdate", async function (doc, next) {
+  console.log("Post update middleware");
+
+  // Check if the document exists and has been updated
+  if (doc) {
+    const status = await sendCertificate(doc);
+    if (status) {
+      console.log("Updating status to sent");
+
+      // Use the document instance method to update the status
+      await doc.updateOne({ status: "sent" });
+      
+      console.log("Status updated");
+    }
+  }
+  next();
 });
+
 
 const Certificate = mongoose.model("Certificate", certificateSchema);
 

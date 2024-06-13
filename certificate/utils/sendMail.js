@@ -132,7 +132,6 @@ const sendMail = async (email, subject , filePath ,filename) => {
         },
       ],
     });
-    console.log("Mail sent successfully");
     return true;
 };
   

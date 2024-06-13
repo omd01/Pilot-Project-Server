@@ -60,12 +60,24 @@
       </div>
 
       <div class="mb-8">
+        
+        <% if(incentive === null || incentive ==="") { %>
         <p class=" ">
           This is to certify that Mr./Mrs.
           <span class="font-semibold"><%= studentName %></span> has successfully completed
           the task titled "<span class="font-semibold"><%= taskName %></span>" under
           the domain of <span class="font-semibold"><%= domain %></span>.
         </p>
+        <%} else { %>
+          <p class=" ">
+            This is to certify that Mr./Mrs.
+            <span class="font-semibold"><%= studentName %></span> has successfully completed
+            the task titled "<span class="font-semibold"><%= taskName %></span>" under
+            the domain of <span class="font-semibold"><%= domain %></span>
+            and has been awarded an incentive of <span class="font-semibold"><%= incentive %></span>
+            from the company.
+          </p>
+        <%} %>
       </div>
 
       <div class="mb-8">
