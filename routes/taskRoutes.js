@@ -19,4 +19,6 @@ router.delete('/tasks/:id', taskController.deleteTask);
 
 router.put('/tasks/:taskId/discussions', taskController.addOrUpdateDiscussionToTask);
 
+router.delete('/tasks/:taskId/discussions/:discussionIndex', taskController.deleteDiscussionFromTask);
+
 module.exports = router;

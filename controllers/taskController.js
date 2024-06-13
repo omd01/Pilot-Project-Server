@@ -94,6 +94,7 @@ exports.addOrUpdateDiscussionToTask = async (req, res) => {
         if (discussionIndex !== undefined) {
             // Update existing discussion
             if (task.discussions[discussionIndex]) {
+                task.discussions[discussionIndex].question = question; // Update question
                 task.discussions[discussionIndex].answer = answer;
             } else {
                 return res.status(400).json({ message: 'Discussion not found' });
@@ -111,3 +112,25 @@ exports.addOrUpdateDiscussionToTask = async (req, res) => {
     }
 };
 
+exports.deleteDiscussionFromTask = async (req, res) => {
+    const { taskId, discussionIndex } = req.params;
+
+    try {
+        const task = await Task.findOne({ taskId });
+
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+
+        if (task.discussions[discussionIndex]) {
+            task.discussions.splice(discussionIndex, 1); // Remove the discussion
+            await task.save();
+            return res.status(200).json({ message: 'Discussion deleted successfully' });
+        } else {
+            return res.status(400).json({ message: 'Discussion not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting discussion:', error);
+        res.status(500).json({ message: 'Error deleting discussion', error });
+    }
+};
