@@ -25,7 +25,6 @@ certificateSchema.post("save", async function (doc, next) {
 
 // Post-update middleware
 certificateSchema.post("findOneAndUpdate", async function (doc, next) {
-  console.log("Post update middleware");
 
   // Check if the document exists and has been updated
   if (doc) {
@@ -35,13 +34,10 @@ certificateSchema.post("findOneAndUpdate", async function (doc, next) {
 
       // Use the document instance method to update the status
       await doc.updateOne({ status: "sent" });
-      
-      console.log("Status updated");
     }
   }
   next();
 });
-
 
 const Certificate = mongoose.model("Certificate", certificateSchema);
 
