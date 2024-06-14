@@ -35,6 +35,19 @@ exports.getCertificateById = async (req, res) => {
   }
 };
 
+// Get a certificate by Task ID
+exports.getCertificateByTaskId = async (req, res) => {
+  try {
+    const certificate = await Certificate.find({ taskId: req.params.taskid });
+    if (!certificate) {
+      return res.status(404).json({ message: 'Certificate not found' });
+    }
+    res.status(200).json(certificate);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching certificate', error });
+  }
+};
+
 // Update a certificate by ID
 exports.updateCertificate = async (req, res) => {
   try {

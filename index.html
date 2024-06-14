@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex justify-center items-center w-screen h-screen bg-black">
+    
+      <div class="p-4 w-full max-w-2xl max-h-full">
+          <!-- Modal content -->
+          <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                  <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Certificate Management
+                  </h3>
+                  
+            </div>
+
+              <!-- Modal body -->
+            <div class="p-4 md:p-5 space-y-4">
+                <!-- Task & Certificate Selection Bar Tab -->
+                <div class="max-w-sm mx-auto">
+                    <label for="taskSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+                    <select id="taskSelect" onchange="loadCertificates()" class="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </select>
+                </div>
+                <div class="max-w-sm mx-auto">
+                    <label for="certificateSelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+                    <select id="certificateSelect" onchange="showCertificateDetails()" class="bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </select>
+                </div>
+                
+                <!-- Certificate Details -->
+                <div class="px-5 " id="certificateDetails" style="display: none;">
+                    <div class="grid md:grid-cols-2 md:gap-5 ">
+                        <div class="mb-5">    
+                        <label for="studentName" class="w-full mb-2 text-sm font-medium text-gray-900 dark:text-white">Student Name </label>
+                        <input type="text" id="studentName" class="outline-none shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" readonly/>
+                        </div>
+                        <div class="mb-5">
+                        <label for="studentEmail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student Email</label>
+                        <input type="text" id="studentEmail" class="outline-none shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" readonly />
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 md:gap-5">
+                        <div class="mb-5">    
+                        <label for="companyName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Name </label>
+                        <input type="text" id="companyName" class=" outline-none shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" readonly/>
+                        </div>
+                        <div class="mb-5">
+                        <label for="companyManager" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student Email</label>
+                        <input type="text" id="companyManager" class="outline-none shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" readonly />
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 md:gap-5">
+                        <div class="mb-5">    
+                        <label for="domain" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Domain </label>
+                        <input type="text" id="domain" class="outline-none shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" readonly/>
+                        </div>
+                        <div class="mb-5">
+                        <label for="desc" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                        <input type="text" id="desc" class="outline-none shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" readonly />
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 md:gap-5">
+                        <div class="mb-5">
+                        <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+                        <input type="text" id="status" class="outline-none shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" readonly />
+                        </div>
+                    <div class="mb-5">
+                        <label for="incentive" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Incentive</label>
+                        <input type="text" id="incentive" class="outline-none shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+              <!-- Modal footer -->
+              <div class=" items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600 " id="updateStatus" style="display: none;" >
+                  <button  type="button" onclick="approveCertificate()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Approve</button>
+              </div>
+          </div>
+      </div>
+
+
+    <script>
+        window.onload = async function() {
+            await loadTasks();
+        };
+        
+        // Load all tasks and populate the task dropdown
+        async function loadTasks() {
+            try {
+                const response = await fetch('http://localhost:5000/api/tasks');
+                const tasks = await response.json();
+                
+                const taskSelect = document.getElementById('taskSelect');
+                taskSelect.innerHTML = '<option value="">Select a task</option>';
+                
+                tasks.forEach(task => {
+                    const option = document.createElement('option');
+                    option.value = task.taskId;
+                    option.textContent = task.name;
+                    taskSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+            }
+        }
+        
+        // Load certificates for the selected task
+        async function loadCertificates() {
+            const taskId = document.getElementById('taskSelect').value;
+            if (!taskId) return;
+            
+            try {
+                const response = await fetch(`http://localhost:5000/api/certificates/taskid/${taskId}`);
+                const certificates = await response.json();
+                
+                const certificateSelect = document.getElementById('certificateSelect');
+                certificateSelect.innerHTML = '<option value="">Select a certificate</option>';
+                
+                certificates.forEach(certificate => {
+                    const option = document.createElement('option');
+                    option.value = certificate._id;
+                    option.textContent = certificate.studentName; // Or any other identifying info
+                    certificateSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+            }
+        }
+        
+        // Show details of the selected certificate
+        async function showCertificateDetails() {
+            const certificateId = document.getElementById('certificateSelect').value;
+            if (!certificateId) return;
+            
+            try {
+                const response = await fetch(`http://localhost:5000/api/certificates/${certificateId}`);
+                const certificate = await response.json();
+
+                // document.getElementById('taskName').innerText = certificate.taskName;
+                // document.getElementById('taskId').innerText = certificate.taskId;
+                document.getElementById('companyName').value = certificate.companyName;
+                document.getElementById('companyManager').value = certificate.companyManager;
+                document.getElementById('desc').value = certificate.desc;
+                document.getElementById('domain').value = certificate.domain;
+                document.getElementById('studentName').value = certificate.studentName;
+                document.getElementById('studentEmail').value = certificate.studentEmail;
+                document.getElementById('status').value = certificate.status;
+                document.getElementById('incentive').innerText = certificate.incentive;
+                document.getElementById('certificateDetails').style.display = 'block';
+
+                if(certificate.status !== "sent"){
+                    document.getElementById('updateStatus').style.display = 'flex';
+                }
+                else{
+                    document.getElementById('updateStatus').style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error('Error loading certificate details:', error);
+            }
+        }
+        
+        // Approve the selected certificate and update the status
+        async function approveCertificate() {
+            const certificateId = document.getElementById('certificateSelect').value;
+            if (!certificateId) return;
+            
+            const incentive = document.getElementById('incentive').value;
+            
+            try {
+                const response = await fetch(`http://localhost:5000/api/certificates/${certificateId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: 'approved',
+                        incentive: incentive
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('Certificate approved successfully!');
+                    showCertificateDetails();
+                } else {
+                    alert('Failed to approve certificate.');
+                }
+            } catch (error) {
+                console.error('Error approving certificate:', error);
+            }
+        }
+    </script>
+</body>
+</html>

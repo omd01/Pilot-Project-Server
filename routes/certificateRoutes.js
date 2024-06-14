@@ -12,6 +12,9 @@ router.get('/', certificateController.getAllCertificates);
 // Route to get a certificate by ID
 router.get('/:id', certificateController.getCertificateById);
 
+// Route to get a certificate by Task ID
+router.get('/taskid/:taskid', certificateController.getCertificateByTaskId);
+
 // Route to update a certificate by ID
 router.put('/:id', certificateController.updateCertificate);
 

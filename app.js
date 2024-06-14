@@ -9,6 +9,8 @@ const taskRoutes = require('./routes/taskRoutes');
 const certificateRoutes = require('./routes/certificateRoutes');
 const SemailRoutes = require('./routes/SemailRoutes');
 
+const path = require("path");
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -17,6 +19,12 @@ app.use(bodyParser.json());
 
 // Connect to MongoDB
 connectDB();
+
+//Home (TEMP)
+app.get("/", (req, res) => {
+  console.log("Serving index.html");
+  res.sendFile(path.join(__dirname, "index.html"));
+});
 
 // Routes
 app.use('/api/forms', formRoutes);
