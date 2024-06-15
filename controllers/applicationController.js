@@ -88,6 +88,7 @@ exports.deleteApplicationByPhoneNumber = async (req, res) => {
   try {
     const studentNumber = req.params.phone;
 
+    // Delete applicaiton
     const deletedApplication = await Application.findOneAndDelete({ studentNumber });
 
     if (!deletedApplication) {
