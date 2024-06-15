@@ -63,12 +63,12 @@ exports.getAllApplications = async (req, res) => {
 
 exports.updateApplicationByPhoneNumber = async (req, res) => {
   try {
-    const { phone } = req.params;
+    const studentNumber = req.params.phone;
     const updateData = req.body;
 
     // Find and update the application by studentNumber
     const updatedApplication = await Application.findOneAndUpdate(
-      { phone },
+      { studentNumber },
       updateData,
       { new: true }
     );
@@ -79,14 +79,14 @@ exports.updateApplicationByPhoneNumber = async (req, res) => {
 
     res.status(200).json(updatedApplication);
   } catch (error) {
-    console.error("Error updating application:", error);
+    console.log("Error updating application:", error);
     res.status(500).json({ message: "Failed to update application" });
   }
 };
 
 exports.deleteApplicationByPhoneNumber = async (req, res) => {
   try {
-    const { studentNumber } = req.params;
+    const studentNumber = req.params.phone;
 
     // Find and delete the application by studentNumber
     const deletedApplication = await Application.findOneAndDelete({ studentNumber });
