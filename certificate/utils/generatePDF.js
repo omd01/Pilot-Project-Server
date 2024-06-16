@@ -8,7 +8,7 @@ const generatePDF = async (data) => {
   try {
     const templatePath = path.join(__dirname, "..", "views", "ExperienceIndex.ejs");
     const template = await fs.promises.readFile(templatePath, "utf-8");
-
+    data.date = getFormattedDate();
     const htmlContent = ejs.render(template, data);
     const browser = await puppeteer.launch({
       headless: true,
@@ -37,5 +37,24 @@ const generatePDF = async (data) => {
     return null;
   }
 };
+
+function getFormattedDate() {
+  const date = new Date();
+
+  // Array of month names
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const month = monthNames[date.getMonth()]; // Get the month name
+  const day = date.getDate(); // Get the day of the month
+  const year = date.getFullYear(); // Get the full year
+
+  return `${month} ${day}, ${year}`;
+}
+
+// Print the formatted date
+
 
 module.exports = generatePDF;

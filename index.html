@@ -11,12 +11,10 @@
         }
     </style>
 </head>
-<body class="flex justify-center items-center w-screen h-screen bg-black">
+<body class="flex justify-center flex-col items-center w-screen h-screen bg-black">
     
     <div class="p-4 w-full max-w-2xl max-h-full">
        
-           
-        
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
 
@@ -38,12 +36,17 @@
 
                 <!-- Certificate Details -->
                 <div class="px-5 overflow-y-auto max-h-full  md:max-h-72 scrollhide" id="certificateDetails"></div>
+                <div class="flex justify-end px-5" id="approveAllButtonDiv" style="display: none;">
+                    <button id="approveAllButton" onclick="approveAllCertificates()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Approve All</button>
+
+                </div>
             </div>
         </div>
+       
     </div>
-
+    
     <script>
-        window.onload = async function() {
+       window.onload = async function() {
             await loadTasks();
         };
 
@@ -52,10 +55,10 @@
             try {
                 const response = await fetch('http://localhost:5000/api/tasks');
                 const tasks = await response.json();
-                
+
                 const taskSelect = document.getElementById('taskSelect');
-                taskSelect.innerHTML = '<option value="">Select a task</option>';
-                
+                taskSelect.innerHTML = '<option value="" style=""><span>Select a task<span></option>';
+
                 tasks.forEach(task => {
                     const option = document.createElement('option');
                     option.value = task.taskId;
@@ -84,7 +87,7 @@
                         const certificateElement = document.createElement('div');
                         certificateElement.className = 'grid md:grid-cols-4 md:gap-4 mb-5';
                         certificateElement.innerHTML = `
-                            <div class="mt-1">
+                            <div class="mt-1 ">
                                 <label for="studentName-${certificate._id}" class="w-full mb-2 text-sm font-medium text-gray-900 dark:text-white">Student Name</label>
                                 <input type="text" id="studentName-${certificate._id}" value='${certificate.studentName}' class="outline-none shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" readonly/>
                             </div>
@@ -96,6 +99,8 @@
                                 <label for="incentive-${certificate._id}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Incentive</label>
                                 <input type="text" id="incentive-${certificate._id}" value='${certificate.incentive}' class="outline-none shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
                             </div>
+
+                            
                         `;
                         if (certificate.status !== 'sent') {
                             certificateElement.innerHTML += `
@@ -103,9 +108,20 @@
                                     <button type="button" onclick="approveCertificate('${certificate._id}')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Approve</button>
                                 </div>
                             `;
+                        document.getElementById('approveAllButtonDiv').style.display = 'flex';
+
+                        }
+                            else{
+                                certificateElement.innerHTML += `
+                               <div class="flex mt-5 items-center justify-end" id="approveButtonContainer-${certificate._id}">
+                                    <button type="button"  class="text-white bg-green-700   font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-greeen-600  outline-none ">Approved</button>
+                                </div>
+                            `;
+
                         }
                         certificateDetails.appendChild(certificateElement);
                     });
+
                 } else {
                     certificateDetails.innerHTML = '<p class="text-sm font-medium text-gray-900 dark:text-white">No certificates found for the selected task.</p>';
                 }
@@ -121,10 +137,13 @@
 
             // Show loading spinner
             approveButtonContainer.innerHTML = `
-                 <div role="status" class="flex items-center justify-end">
-                <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
-                <span class="sr-only">Loading...</span>
-            </div>
+                <div role="status" class="flex items-center justify-end">
+                    <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                    </svg>
+                    <span class="sr-only">Loading...</span>
+                </div>
             `;
 
             try {
@@ -140,7 +159,7 @@
                 });
 
                 if (response.ok) {
-                    alert('Certificate approved successfully!');
+                    // alert('Certificate approved successfully!');
                     loadCertificates(); // Refresh certificate details
                 } else {
                     alert('Failed to approve certificate.');
@@ -157,6 +176,18 @@
                 `;
             }
         }
+
+        // Approve all certificates
+        async function approveAllCertificates() {
+            const certificates = document.querySelectorAll('#certificateDetails > div');
+            for (const certificateElement of certificates) {
+                const certificateId = certificateElement.querySelector('input[type="text"]').id.split('-')[1];
+                const certificateStatus = certificateElement.querySelector(`input[id=status-${certificateId}]`).value;
+                if (certificateStatus == 'sent') continue;
+                await approveCertificate(certificateId);
+            }
+        }
     </script>
 </body>
 </html>
+   
