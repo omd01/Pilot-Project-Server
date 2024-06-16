@@ -1,5 +1,3 @@
-// controllers/companyProfileController.js
-
 const CompanyProfile = require('../models/CompanyProfile');
 
 // Get all company profiles
@@ -14,13 +12,15 @@ exports.getAllCompanyProfiles = async (req, res) => {
 
 // Create a new company profile
 exports.createCompanyProfile = async (req, res) => {
-  const { companyLogo, companyName, desc, companyId } = req.body;
+  const { companyLogo, companyName, desc, companyId, manager, managerSign } = req.body;
 
   const newCompanyProfile = new CompanyProfile({
     companyLogo,
     companyName,
     desc,
-    companyId
+    companyId,
+    manager,
+    managerSign
   });
 
   try {
@@ -55,13 +55,13 @@ exports.getCompanyProfileById = async (req, res) => {
 // Update a company profile
 exports.updateCompanyProfile = async (req, res) => {
   const { companyId } = req.params;
-  const { companyLogo, companyName, desc } = req.body;
+  const { companyLogo, companyName, desc, manager, managerSign } = req.body;
 
   try {
     const updatedProfile = await CompanyProfile.findOneAndUpdate(
       { companyId },
-      { companyLogo, companyName, desc },
-      // { new: true }
+      { companyLogo, companyName, desc, manager, managerSign },
+      { new: true } // This ensures the updated document is returned
     );
 
     if (!updatedProfile) {

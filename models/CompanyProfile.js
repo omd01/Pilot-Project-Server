@@ -19,6 +19,14 @@ const companyProfileSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  manager: {
+    type: String,
+    required: true,
+  },
+  managerSign: {
+    type: String,
+    required: true
   }
 });
 
