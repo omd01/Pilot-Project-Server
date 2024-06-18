@@ -62,7 +62,7 @@
                 tasks.forEach(task => {
                     const option = document.createElement('option');
                     option.value = task.taskId;
-                    option.textContent = task.name;
+                    option.textContent = task.taskId;
                     taskSelect.appendChild(option);
                 });
             } catch (error) {

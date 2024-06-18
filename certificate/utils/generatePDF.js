@@ -28,9 +28,21 @@ const generatePDF = async (data) => {
     const pdfPath = path.join(outputDir, `${data.studentName}.pdf`);
     await page.pdf({ path: pdfPath, format: "A4" });
 
-    const mailStatus = await sendMail(data.studentEmail, 'Certificate', pdfPath, `${data.studentName}.pdf`);
+    const bodayPath = path.join(__dirname, "..", "views", "MailBody.ejs");
+
+    var body;
+    ejs.renderFile(bodayPath, async (err, data) => {
+      body = data;
+    });
+
+    const mailStatus = await sendMail(data.studentEmail, `Certificate of Completion ${data.taskName}`, pdfPath, `${data.studentName}.pdf` ,body);
 
     await browser.close();
+    fs.unlink(pdfPath, (err) => {
+      if (err) {
+        console.error("Error deleting PDF:", err);
+      }
+    });
     return mailStatus ;
   } catch (error) {
     console.error("Error generating PDF:", error);
