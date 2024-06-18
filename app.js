@@ -17,12 +17,6 @@ app.use(bodyParser.json());
 // Connect to MongoDB
 connectDB();
 
-//Home (TEMP)
-app.get("/", (req, res) => {
-  console.log("Serving index.html");
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
 // Routes
 app.use('/api/forms', formRoutes);
 app.use('/api/applications', applicationRoutes);

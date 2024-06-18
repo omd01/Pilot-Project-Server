@@ -28,14 +28,9 @@ const generatePDF = async (data) => {
     const pdfPath = path.join(outputDir, `${data.studentName}.pdf`);
     await page.pdf({ path: pdfPath, format: "A4" });
 
-    const bodayPath = path.join(__dirname, "..", "views", "MailBody.ejs");
 
-    var body;
-    ejs.renderFile(bodayPath, async (err, data) => {
-      body = data;
-    });
 
-    const mailStatus = await sendMail(data.studentEmail, `Certificate of Completion ${data.taskName}`, pdfPath, `${data.studentName}.pdf` ,body);
+    const mailStatus = await sendMail(data.studentEmail, `Certificate of Completion ${data.taskName}`, pdfPath, `${data.studentName}.pdf` );
 
     await browser.close();
     fs.unlink(pdfPath, (err) => {

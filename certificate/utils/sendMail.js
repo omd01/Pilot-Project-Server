@@ -1,7 +1,7 @@
 const createTransport = require("nodemailer").createTransport;
 const ejs = require("ejs");
 
-const sendMail = async (email, subject , filePath ,filename, html) => {
+const sendMail = async (email, subject , filePath ,filename) => {
     const transport = createTransport({
       service: "gmail",
       host: process.env.SMTP_HOST,
@@ -17,7 +17,7 @@ const sendMail = async (email, subject , filePath ,filename, html) => {
       from: process.env.SMTP_USER,
       to: email,
       subject,
-      html,
+      // html,
       attachments: [
         {
           filename: filename,
