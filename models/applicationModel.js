@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const applicationSchema = new mongoose.Schema({
   taskId: { type: String, required: true },
   taskName: { type: String, required: true },
+  companyId: { type: String, required: true },
   companyName: { type: String, required: true },
   domain: { type: String, required: true },
   studentName: { type: String, required: true },
