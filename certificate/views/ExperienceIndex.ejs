@@ -44,7 +44,7 @@
         <div class="text-2xl font-medium poppins-light">Experience Index</div>
         <div class="text-xl font-semibold text-blue-500">
           <img
-            src="https://res.cloudinary.com/dqbwa8i3y/image/upload/v1718260231/QrAtt/LinksUS/company2_lm1cr4.png"
+            src="<%= companyLogo %>"
             alt="Company Logo"
             class="h-16"
           />
@@ -61,7 +61,7 @@
 
       <div class="mb-8">
         
-        <% if(incentive === null || incentive ==="") { %>
+        <% if(incentive === null || incentive == "null" || incentive ==="") { %>
         <p class=" ">
           This is to certify that Mr./Mrs.
           <span class="font-semibold"><%= studentName %></span> has successfully completed
