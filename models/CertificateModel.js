@@ -4,8 +4,8 @@ const sendCertificate = require("../certificate/certificate.service");
 const certificateSchema = new mongoose.Schema({
   taskName: { type: String, required: true },
   taskId: { type: String, required: true },
-  companyManager: { type: String, required: true },
-  companyManagerSignature: { type: String, required: true },
+  companyManager: { type: String },
+  companyManagerSignature: { type: String},
   companyName: { type: String, required: true },
   companyLogo: { type: String, required: true },
   desc: { type: String, required: true },

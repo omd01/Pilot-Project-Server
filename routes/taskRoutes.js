@@ -17,8 +17,10 @@ router.put('/tasks/:id', taskController.updateTask);
 // Delete a task by ID
 router.delete('/tasks/:id', taskController.deleteTask);
 
+router.put('/tasks/:taskId/discussions', taskController.addOrUpdateDiscussionToTask);
 router.post('/tasks/:taskId/discussions', taskController.addOrUpdateDiscussionToTask);
 router.get('/tasks/:taskId/discussions', taskController.getDiscussions);
+router.delete('/tasks/:taskId/discussions/:discussionIndex', taskController.deleteDiscussionFromTask);
 
 
 module.exports = router;

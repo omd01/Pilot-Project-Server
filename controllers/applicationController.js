@@ -71,18 +71,19 @@ exports.getAllApplications = async (req, res) => {
     const applications = await Application.find();
     res.status(200).json(applications);
   } catch (error) {
+    console.error("Error fetching applications:", error);
     res.status(500).json({ message: "Failed to fetch applications" });
   }
 };
 
 exports.updateApplicationByPhoneNumber = async (req, res) => {
   try {
-    const { phone } = req.params;
+    const studentNumber = req.params.phone;
     const updateData = req.body;
 
     // Find and update the application by studentNumber
     const updatedApplication = await Application.findOneAndUpdate(
-      { phone },
+      { studentNumber },
       updateData,
       { new: true }
     );
@@ -93,15 +94,15 @@ exports.updateApplicationByPhoneNumber = async (req, res) => {
 
     res.status(200).json(updatedApplication);
   } catch (error) {
+    console.log("Error updating application:", error);
     res.status(500).json({ message: "Failed to update application" });
   }
 };
 
 exports.deleteApplicationByPhoneNumber = async (req, res) => {
   try {
-    const { studentNumber } = req.params;
+    const studentNumber = req.params.phone;
 
-    // Find and delete the application by studentNumber
     const deletedApplication = await Application.findOneAndDelete({ studentNumber });
 
     if (!deletedApplication) {
@@ -110,7 +111,7 @@ exports.deleteApplicationByPhoneNumber = async (req, res) => {
 
     res.status(200).json({ message: "Application deleted successfully" });
   } catch (error) {
-
+    console.error("Error deleting application:", error);
     res.status(500).json({ message: "Failed to delete application" });
   }
 };
