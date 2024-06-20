@@ -8,6 +8,7 @@ const companyProfileRoutes = require('./routes/companyProfileRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const certificateRoutes = require('./routes/certificateRoutes');
 const SemailRoutes = require('./routes/SemailRoutes');
+const CemailRoutes = require('./routes/CemailRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -24,6 +25,7 @@ app.use('/api/company-profiles', companyProfileRoutes);
 app.use('/api', taskRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/student', SemailRoutes);
+app.use('/api/company', CemailRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
