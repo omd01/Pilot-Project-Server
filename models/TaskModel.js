@@ -22,7 +22,7 @@ const TaskSchema = new Schema({
     helpLinks: { type: [String] },
     nice: { type: [String] },
     endDate: { type: Date, required: true },
-    discussions: { type: [DiscussionSchema], default: [] } // Add this line
+    discussions: { type: [DiscussionSchema], default: [] }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Task', TaskSchema);
