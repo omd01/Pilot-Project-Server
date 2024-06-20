@@ -53,11 +53,14 @@ exports.submitForm = async (req, res) => {
 exports.getAllFormData = async (req, res) => {
   try {
     const allFormData = await FormData.find();
+    console.log("All form data:", allFormData);
     res.status(200).json(allFormData);
   } catch (error) {
+    console.error("Error fetching form data:", error);
     res.status(500).send("Server error");
   }
 };
+
 
 exports.getFormDataByPhone = async (req, res) => {
   try {
@@ -74,6 +77,7 @@ exports.getFormDataByPhone = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 // Update a user's form data
 exports.updateFormData = async (req, res) => {
