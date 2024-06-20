@@ -39,6 +39,8 @@ exports.createCertificate = async (req, res) => {
       taskName,
       companyName,
       companyLogo: company.companyLogo,
+      manager:company.manager,
+      managerSign:company.managerSign,
       desc: task.desc,
       domain,
       studentName,

@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const formDataController = require("../controllers/formDataController");
+const formController = require("../controllers/formController");
 
-router.post("/submit", formDataController.submitForm);
-router.get("/form-data", formDataController.getAllFormData);
-router.get('/:phone', formDataController.getFormDataByPhone);
-router.put('/:phone', formDataController.updateFormData);
-router.delete('/:phone', formDataController.deleteFormData);
+
+router.post("/submit", formController.submitForm);
+router.get("/form-data", formController.getAllFormData);
+router.get('/:phone', formController.getFormDataByPhone);
+router.put('/:phone', formController.updateFormData);
+router.delete('/:phone', formController.deleteFormData);
+
 
 module.exports = router;

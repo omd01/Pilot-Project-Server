@@ -11,3 +11,4 @@ router.put("/:phone", applicationController.updateApplicationByPhoneNumber);
 router.delete("/:phone", applicationController.deleteApplicationByPhoneNumber);
 
 module.exports = router;
+

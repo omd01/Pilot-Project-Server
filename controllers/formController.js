@@ -25,6 +25,7 @@ exports.submitForm = async (req, res) => {
         formData.state = state; // Update state
         formData.city = city; // Update city
         await formData.save();
+        console.log("Form data updated:", formData);
         return res.status(200).send("Domain added successfully.");
       }
     } else {
@@ -39,9 +40,11 @@ exports.submitForm = async (req, res) => {
         city,
       });
       await formData.save();
+      console.log("Form data saved:", formData);
       return res.status(201).send("Form data saved successfully.");
     }
   } catch (error) {
+    console.error("Error saving form data:", error);
     if (error.name === 'ValidationError') {
       return res.status(400).send(error.message);
     }
@@ -61,7 +64,7 @@ exports.getAllFormData = async (req, res) => {
   }
 };
 
-
+// Fetch a user data by phone number
 exports.getFormDataByPhone = async (req, res) => {
   try {
     const phone = req.params.phone;
@@ -73,11 +76,9 @@ exports.getFormDataByPhone = async (req, res) => {
       res.status(404).json({ message: 'Form data not found' });
     }
   } catch (error) {
- 
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
 
 // Update a user's form data
 exports.updateFormData = async (req, res) => {
@@ -105,7 +106,7 @@ exports.updateFormData = async (req, res) => {
     await formData.save();
     res.status(200).json({ message: 'Form data updated successfully', formData });
   } catch (error) {
-  
+    console.error("Error updating form data:", error);
     res.status(500).send("Server error");
   }
 };
@@ -123,7 +124,7 @@ exports.deleteFormData = async (req, res) => {
 
     res.status(200).json({ message: 'Form data deleted successfully' });
   } catch (error) {
-   
+    console.error("Error deleting form data:", error);
     res.status(500).send("Server error");
   }
 };
