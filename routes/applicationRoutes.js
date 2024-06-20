@@ -5,9 +5,10 @@ const applicationController = require('../controllers/applicationController');
 router.post('/submit', applicationController.createApplication);
 router.get('/', applicationController.getAllApplications);
 // Update application by phone number
-router.put("/applications/:phone", applicationController.updateApplicationByPhoneNumber);
+router.put("/:phone", applicationController.updateApplicationByPhoneNumber);
 
 // Delete application by phone number
-router.delete("/applications/:phone", applicationController.deleteApplicationByPhoneNumber);
+router.delete("/:phone", applicationController.deleteApplicationByPhoneNumber);
 
 module.exports = router;
+

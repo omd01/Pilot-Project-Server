@@ -53,7 +53,11 @@ exports.getTaskById = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
     try {
-        const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        const task = await Task.findOneAndUpdate(
+            { taskId: req.params.id },  // Search by taskId
+            req.body,
+            { new: true, runValidators: true }
+        );
         if (!task) {
             return res.status(404).json({ error: 'Task not found' });
         }
@@ -65,7 +69,7 @@ exports.updateTask = async (req, res) => {
 
 exports.deleteTask = async (req, res) => {
     try {
-        const task = await Task.findByIdAndDelete(req.params.id);
+        const task = await Task.findOneAndDelete({ taskId: req.params.id });  // Search by taskId
         if (!task) {
             return res.status(404).json({ error: 'Task not found' });
         }
@@ -73,6 +77,26 @@ exports.deleteTask = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+};
+
+//displaying discussions
+exports.getDiscussions = async (req, res) => {
+  const { taskId } = req.params;
+
+  try {
+    const task = await Task.findOne({ taskId });
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    const filteredDiscussions = task.discussions.filter(
+      (discussion) => discussion.answer
+    );
+    res.status(200).json(filteredDiscussions);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching discussions", error });
+  }
 };
 
 // Controller function to add a discussion to a task
@@ -90,6 +114,7 @@ exports.addOrUpdateDiscussionToTask = async (req, res) => {
         if (discussionIndex !== undefined) {
             // Update existing discussion
             if (task.discussions[discussionIndex]) {
+                task.discussions[discussionIndex].question = question; // Update question
                 task.discussions[discussionIndex].answer = answer;
             } else {
                 return res.status(400).json({ message: 'Discussion not found' });
@@ -107,9 +132,8 @@ exports.addOrUpdateDiscussionToTask = async (req, res) => {
     }
 };
 
-//displaying discussions
-exports.getDiscussions = async (req, res) => {
-    const { taskId } = req.params;
+exports.deleteDiscussionFromTask = async (req, res) => {
+    const { taskId, discussionIndex } = req.params;
 
     try {
         const task = await Task.findOne({ taskId });
@@ -118,9 +142,15 @@ exports.getDiscussions = async (req, res) => {
             return res.status(404).json({ message: 'Task not found' });
         }
 
-        const filteredDiscussions = task.discussions.filter(discussion => discussion.answer);
-        res.status(200).json(filteredDiscussions);
+        if (task.discussions[discussionIndex]) {
+            task.discussions.splice(discussionIndex, 1); // Remove the discussion
+            await task.save();
+            return res.status(200).json({ message: 'Discussion deleted successfully' });
+        } else {
+            return res.status(400).json({ message: 'Discussion not found' });
+        }
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching discussions', error });
+        console.error('Error deleting discussion:', error);
+        res.status(500).json({ message: 'Error deleting discussion', error });
     }
 };
