@@ -24,6 +24,7 @@ exports.createApplication = async (req, res) => {
 
     if (!formData.domains.includes(domain)) {
       // Domain not registered with the provided phone number
+
       return res.status(400).json({
         message: "Phone number not registered with the entered domain",
       });
@@ -42,6 +43,7 @@ exports.createApplication = async (req, res) => {
       return res.status(200).json({
         message: "Drive link updated successfully",
       });
+
     }
 
     // Create a new application instance
@@ -103,7 +105,9 @@ exports.deleteApplicationByPhoneNumber = async (req, res) => {
   try {
     const studentNumber = req.params.phone;
 
-    const deletedApplication = await Application.findOneAndDelete({ studentNumber });
+    const deletedApplication = await Application.findOneAndDelete({
+      studentNumber,
+    });
 
     if (!deletedApplication) {
       return res.status(404).json({ message: "Application not found" });

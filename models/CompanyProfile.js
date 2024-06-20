@@ -33,3 +33,4 @@ const companyProfileSchema = new mongoose.Schema({
 const CompanyProfile = mongoose.model('CompanyProfile', companyProfileSchema);
 
 module.exports = CompanyProfile;
+
