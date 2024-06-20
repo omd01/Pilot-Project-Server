@@ -8,7 +8,6 @@ const companyProfileRoutes = require('./routes/companyProfileRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const certificateRoutes = require('./routes/certificateRoutes');
 const SemailRoutes = require('./routes/SemailRoutes');
-const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 5000;
 

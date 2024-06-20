@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const applicationSchema = new mongoose.Schema({
   taskId: { type: String, required: true },
@@ -9,10 +9,9 @@ const applicationSchema = new mongoose.Schema({
   studentName: { type: String, required: true },
   studentNumber: { type: String, required: true },
   studentEmail: { type: String, required: true },
-  driveLink: { type: String, required: true }
+  driveLink: { type: String, required: true },
 });
 
-const Application = mongoose.model('Application', applicationSchema);
+const Application = mongoose.model("Application", applicationSchema);
 
 module.exports = Application;
-
