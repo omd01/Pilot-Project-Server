@@ -35,7 +35,7 @@ exports.createCompanyProfile = async (req, res) => {
   }
 };
 
-// Get a company profile by company ID
+// Get a company profile by company ID  
 exports.getCompanyProfileById = async (req, res) => {
   const { companyId } = req.params;
 

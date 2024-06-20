@@ -15,10 +15,11 @@ const TaskSchema = new Schema({
     companyName: { type: String, required: true },
     taskReq: { type: String, required: true },
     desc: { type: String, required: true },
+    shortDesc: { type: String, required: true },
     domain: { type: String, required: true },
     skill: { type: [String], required: true },
     stipend: { type: Number, required: true },
-    helpLinks: { type: String },
+    helpLinks: { type: [String] },
     nice: { type: [String] },
     endDate: { type: Date, required: true },
     discussions: { type: [DiscussionSchema], default: [] } // Add this line
