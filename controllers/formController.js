@@ -65,9 +65,9 @@ exports.getAllFormData = async (req, res) => {
 };
 
 // Fetch a user by phone number
-exports.getUserByPhone = async (req, res) => {
+exports.getFormDataByPhone = async (req, res) => {
   try {
-    const { phone } = req.params;
+    const phone = req.params.phone;
     const formData = await FormData.findOne({ phone });
 
     if (formData) {
@@ -76,8 +76,8 @@ exports.getUserByPhone = async (req, res) => {
       res.status(404).json({ message: 'Form data not found' });
     }
   } catch (error) {
-    console.error("Error fetching user data:", error);
-    res.status(500).send("Server error");
+ 
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 

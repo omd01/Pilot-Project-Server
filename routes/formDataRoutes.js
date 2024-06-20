@@ -4,7 +4,7 @@ const formController = require("../controllers/formController");
 
 router.post("/submit", formController.submitForm);
 router.get("/form-data", formController.getAllFormData);
-router.get('/:phone', formController.getUserByPhone);
+router.get('/:phone', formController.getFormDataByPhone);
 router.put('/:phone', formController.updateFormData);
 router.delete('/:phone', formController.deleteFormData);
 
