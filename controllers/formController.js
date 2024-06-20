@@ -64,7 +64,7 @@ exports.getAllFormData = async (req, res) => {
   }
 };
 
-// Fetch a user by phone number
+// Fetch a user data by phone number
 exports.getFormDataByPhone = async (req, res) => {
   try {
     const phone = req.params.phone;
