@@ -6,7 +6,7 @@ const isAuthenticated  = require("../middlewares/auth.js")
 router.post("/submit", formController.submitForm);
 router.get("/logout", formController.logout);
 router.get("/form-data",isAuthenticated, formController.getAllFormData);
-router.get('/:phone',isAuthenticated, formController.getFormDataByPhone);
+router.get('/:email',isAuthenticated, formController.getFormDataByEmail);
 router.put('/:phone',isAuthenticated, formController.updateFormData);
 router.delete('/:phone',isAuthenticated, formController.deleteFormData);
 

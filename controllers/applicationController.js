@@ -15,25 +15,25 @@ exports.createApplication = async (req, res) => {
       driveLink,
     } = req.body;
 
-    // Check if the studentNumber exists in FormData
-    const formData = await FormData.findOne({ phone: studentNumber });
+    // Check if the studentEmail exists in FormData
+    const formData = await FormData.findOne({ email: studentEmail });
     if (!formData) {
-      // Phone number not found in FormData
-      return res.status(400).json({ message: "Phone number not registered" });
+      // Email not found in FormData
+      return res.status(400).json({ message: "Email not registered" });
     }
 
     if (!formData.domains.includes(domain)) {
-      // Domain not registered with the provided phone number
+      // Domain not registered with the provided Email
 
       return res.status(400).json({
-        message: "Phone number not registered with the entered domain",
+        message: "Email not registered with the entered domain",
       });
     }
 
     // Check if the student has already applied to the same task
     const existingApplication = await Application.findOne({
       taskId,
-      studentNumber,
+      studentEmail,
     });
 
     if (existingApplication) {
@@ -43,7 +43,6 @@ exports.createApplication = async (req, res) => {
       return res.status(200).json({
         message: "Drive link updated successfully",
       });
-
     }
 
     // Create a new application instance
@@ -71,6 +70,18 @@ exports.createApplication = async (req, res) => {
 exports.getAllApplications = async (req, res) => {
   try {
     const applications = await Application.find();
+    res.status(200).json(applications);
+  } catch (error) {
+    console.error("Error fetching applications:", error);
+    res.status(500).json({ message: "Failed to fetch applications" });
+  }
+};
+
+// Get applications by task ID
+exports.getApplicationsByTaskId = async (req, res) => {
+  try {
+    const { taskId } = req.query;
+    const applications = await Application.find({ taskId });
     res.status(200).json(applications);
   } catch (error) {
     console.error("Error fetching applications:", error);

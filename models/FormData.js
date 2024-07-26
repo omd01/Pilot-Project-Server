@@ -4,7 +4,8 @@ import bcrypt from "bcrypt";
 
 const formDataSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   phone: {
     type: String,
     required: true,
@@ -12,8 +13,8 @@ const formDataSchema = new mongoose.Schema({
       validator: function (v) {
         return /^\d{10}$/.test(v); // Validate phone number is 10 digits
       },
-      message: "Phone number is not valid!",
-    },
+      message: "Phone number is not valid!"
+    }
   },
   // password: {
   //   type: String,
