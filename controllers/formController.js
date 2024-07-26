@@ -1,9 +1,10 @@
 const FormData = require("../models/FormData");
+const sendToken = require("../utils/sendToken");
 
 // Create or update form data
 exports.submitForm = async (req, res) => {
   try {
-    const { name, email, phone, domain, country, state, city } = req.body;
+    const { name, email, phone, domain, country, state, city ,isAdmin} = req.body;
 
     let formData = await FormData.findOne({ phone });
 
@@ -38,10 +39,16 @@ exports.submitForm = async (req, res) => {
         country,
         state,
         city,
+        isAdmin
       });
       await formData.save();
     
-      return res.status(201).send("Form data saved successfully.");
+      sendToken(
+        res,
+        formData
+        , 201,
+        `${(formData.name).split(" ")[0]} Welcome to LinksUs !`
+    );
     }
   } catch (error) {
     console.error("Error saving form data:", error);
@@ -51,6 +58,20 @@ exports.submitForm = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+//Logout user
+exports.logout = async (req, res) => {
+  try {
+      return res.status(200).cookie("token", null, {
+          expires: new Date(Date.now()),
+      })
+          .json({ success: true, message: "Logout Successful" });
+
+
+  } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+  }
+}
 
 // Fetch all form data
 exports.getAllFormData = async (req, res) => {

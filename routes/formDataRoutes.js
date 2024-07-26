@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const formController = require("../controllers/formController");
-
+const isAuthenticated  = require("../middlewares/auth.js")
 
 router.post("/submit", formController.submitForm);
-router.get("/form-data", formController.getAllFormData);
-router.get('/:phone', formController.getFormDataByPhone);
-router.put('/:phone', formController.updateFormData);
-router.delete('/:phone', formController.deleteFormData);
+router.get("/logout", formController.logout);
+router.get("/form-data",isAuthenticated, formController.getAllFormData);
+router.get('/:phone',isAuthenticated, formController.getFormDataByPhone);
+router.put('/:phone',isAuthenticated, formController.updateFormData);
+router.delete('/:phone',isAuthenticated, formController.deleteFormData);
 
 
 module.exports = router;
