@@ -1,7 +1,8 @@
 const UserData = require("../models/UserModel");
+const { sendMail } = require("../utils/sendMail");
 const sendToken = require("../utils/sendToken");
 
-// Create or update form data
+// Create a new user
 exports.register = async (req, res) => {
   try {
     const { name, email, password, phone, domains, country, state, city } = req.body;
@@ -18,6 +19,8 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "Phone number is already registered with a different email." });
     }
 
+    const otp = Math.floor(Math.random() * 1000000);
+
     userData = new UserData({
       name,
       email,
@@ -27,9 +30,13 @@ exports.register = async (req, res) => {
       country,
       state,
       city,
+      otp,
+      otp_expiry: new Date(Date.now() + process.env.OTP_EXPIRE * 60 * 1000),
     });
 
     await userData.save();
+
+    await sendMail(email, "Verify your account", otp,userData.name);
 
     sendToken(
       res,
@@ -45,6 +52,31 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// Verify User By Email OTP
+exports.verify = async (req, res) => {
+  try {
+      const otp = Number(req.body.otp);
+
+      const user = await UserData.findOne(req.user._id);
+
+      if (user.otp !== otp || user.otp_expiry < new Date()) {
+          return res.status(400).json({ success: false, message: "Invalid OTP or OTP has been expired !" });
+      }
+
+      user.verified = true;
+      user.otp_expiry = null;
+      user.otp = null;
+
+      await user.save();
+
+      sendToken(res, user, 200, "Account verified");
+
+  } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+
+  }
+}
 
 //Login user
 exports.login = async (req, res) => {
