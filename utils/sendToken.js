@@ -16,7 +16,6 @@ const sendToken =(res,formData,statusCode,message) =>{
         country : formData.country,
         state : formData.state,
         city : formData.city,
-        isAdmin: formData.isAdmin
         
     }
 

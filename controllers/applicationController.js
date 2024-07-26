@@ -1,5 +1,5 @@
 const Application = require("../models/applicationModel");
-const FormData = require("../models/FormData");
+const FormData = require("../models/UserModel");
 
 exports.createApplication = async (req, res) => {
   try {

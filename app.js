@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const formRoutes = require('./routes/formDataRoutes');
+const userRoutes = require('./routes/UserRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
 const companyProfileRoutes = require('./routes/companyProfileRoutes');
 const taskRoutes = require('./routes/taskRoutes');
@@ -19,7 +19,7 @@ app.use(cookieParser());
 connectDB();
 
 // Routes
-app.use('/api/forms', formRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/company-profiles', companyProfileRoutes);
 app.use('/api', taskRoutes);
