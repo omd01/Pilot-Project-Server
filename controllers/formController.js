@@ -3,36 +3,48 @@ const FormData = require("../models/FormData");
 // Create or update form data
 exports.submitForm = async (req, res) => {
   try {
-    const { name, email, phone, domain, country, state, city } = req.body;
+    const { name, email, password, phone, domain, country, state, city } = req.body;
 
-    let formData = await FormData.findOne({ phone });
+     // Check if the phone number is already registered with a different email
+     const existingUserWithPhone = await FormData.findOne({ phone });
+     if (existingUserWithPhone && existingUserWithPhone.email !== email) {
+       return res.status(400).json({ message: "Phone number is already registered with a different email." });
+     }
+
+    let formData = await FormData.findOne({ email });
 
     if (formData) {
-      // User with this phone number already exists
+      // User with this email already exists
       if (formData.domains.includes(domain)) {
         // Domain already registered
         return res
           .status(400)
-          .send(
-            "You have already registered with this phone number and domain."
-          );
+          .json({ message: "You have already registered with this email and domain. Please register with a different email or for a different domain!" });
       } else {
-        // Add new domain to the domains array
+        // Check if the provided password matches the existing one
+        if (formData.password !== password) {
+          return res
+            .status(400)
+            .json({ message: "Email is already registered and the password you entered is incorrect. Please check your password for confirming your registration!" });
+        }
+
+        // Add new domain to the domains array and update other fields
         formData.domains.push(domain);
         formData.name = name; // Update name
-        formData.email = email; // Update email
+        formData.phone = phone; // Update phone
         formData.country = country; // Update country
         formData.state = state; // Update state
         formData.city = city; // Update city
         await formData.save();
-       
-        return res.status(200).send("Domain added successfully.");
+
+        return res.status(200).json({ message: "Domain added successfully." });
       }
     } else {
       // Create new document
       formData = new FormData({
         name,
         email,
+        password,
         phone,
         domains: [domain], // Initialize domains array with the provided domain
         country,
@@ -40,15 +52,14 @@ exports.submitForm = async (req, res) => {
         city,
       });
       await formData.save();
-    
-      return res.status(201).send("Form data saved successfully.");
+
+      return res.status(201).json({ message: "Form data saved successfully." });
     }
   } catch (error) {
-    console.error("Error saving form data:", error);
     if (error.name === 'ValidationError') {
-      return res.status(400).send(error.message);
+      return res.status(400).json({ message: error.message });
     }
-    res.status(500).send("Server error");
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -56,7 +67,6 @@ exports.submitForm = async (req, res) => {
 exports.getAllFormData = async (req, res) => {
   try {
     const allFormData = await FormData.find();
-    console.log("All form data:", allFormData);
     res.status(200).json(allFormData);
   } catch (error) {
    
@@ -65,10 +75,10 @@ exports.getAllFormData = async (req, res) => {
 };
 
 // Fetch a user data by phone number
-exports.getFormDataByPhone = async (req, res) => {
+exports.getFormDataByEmail = async (req, res) => {
   try {
-    const phone = req.params.phone;
-    const formData = await FormData.findOne({ phone });
+    const email = req.params.email;
+    const formData = await FormData.findOne({ email });
 
     if (formData) {
       res.status(200).json(formData);
