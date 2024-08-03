@@ -125,9 +125,9 @@ exports.logout = async (req, res) => {
 };
 
 // Fetch all form data
-exports.getAllUserData = async (req, res) => {
+exports.getUserDataByID = async (req, res) => {
   try {
-    const allUserData = await UserData.find();
+    const allUserData = await UserData.findById(req.user._id);
     res.status(200).json(allUserData);
   } catch (error) {
     res.status(500).send("Server error");
